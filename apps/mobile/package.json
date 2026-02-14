@@ -1,0 +1,36 @@
+﻿{
+  "name": "my-gym-app-ii-mobile",
+  "version": "0.1.0",
+  "private": true,
+  "main": "expo-router/entry",
+  "scripts": {
+    "start": "expo start",
+    "android": "expo start --android",
+    "ios": "expo start --ios",
+    "web": "expo start --web",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@hookform/resolvers": "^3.9.1",
+    "@my-gym-app/shared": "0.1.0",
+    "@react-native-async-storage/async-storage": "^2.1.2",
+    "expo": "~53.0.0",
+    "expo-network": "~7.0.6",
+    "expo-router": "~5.0.2",
+    "expo-secure-store": "~14.0.1",
+    "react": "19.0.0",
+    "react-hook-form": "^7.54.2",
+    "react-native": "0.79.0",
+    "react-native-safe-area-context": "5.4.0",
+    "react-native-screens": "~4.11.1",
+    "react-native-svg": "15.11.2",
+    "victory-native": "^41.16.0",
+    "zod": "^3.25.0",
+    "zustand": "^5.0.3"
+  },
+  "devDependencies": {
+    "@types/react": "~19.0.10",
+    "babel-plugin-module-resolver": "^5.0.2",
+    "typescript": "^5.7.3"
+  }
+}

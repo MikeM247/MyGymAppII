@@ -1,0 +1,14 @@
+﻿{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "outDir": "dist",
+    "rootDir": ".",
+    "types": ["node"],
+    "paths": {
+      "@/*": ["./src/*"],
+      "@my-gym-app/shared": ["../../packages/shared/src/index.ts"],
+      "@my-gym-app/shared/*": ["../../packages/shared/src/*"]
+    }
+  },
+  "include": ["api", "src", "prisma"]
+}

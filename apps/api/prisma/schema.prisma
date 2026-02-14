@@ -1,0 +1,143 @@
+﻿generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String             @id @default(uuid()) @db.Uuid
+  email         String             @unique
+  passwordHash  String             @map("password_hash")
+  name          String
+  createdAt     DateTime           @default(now()) @map("created_at")
+  updatedAt     DateTime           @updatedAt @map("updated_at")
+  deletedAt     DateTime?          @map("deleted_at")
+
+  workoutTemplates WorkoutTemplate[]
+  workoutSessions  WorkoutSession[]
+  personalRecords  PersonalRecord[]
+
+  @@map("users")
+}
+
+model Exercise {
+  id              String             @id @default(uuid()) @db.Uuid
+  slug            String             @unique
+  name            String
+  muscleGroup     String             @map("muscle_group")
+  equipment       String
+  youtubeUrl      String?            @map("youtube_url")
+  createdAt       DateTime           @default(now()) @map("created_at")
+  updatedAt       DateTime           @updatedAt @map("updated_at")
+  deletedAt       DateTime?          @map("deleted_at")
+
+  templateExercises TemplateExercise[]
+  workoutSets       WorkoutSet[]
+  personalRecords   PersonalRecord[]
+
+  @@index([muscleGroup], map: "idx_exercises_muscle_group")
+  @@index([equipment], map: "idx_exercises_equipment")
+  @@map("exercises")
+}
+
+model WorkoutTemplate {
+  id          String             @id @default(uuid()) @db.Uuid
+  userId      String             @map("user_id") @db.Uuid
+  name        String
+  notes       String?
+  createdAt   DateTime           @default(now()) @map("created_at")
+  updatedAt   DateTime           @updatedAt @map("updated_at")
+  deletedAt   DateTime?          @map("deleted_at")
+
+  user        User               @relation(fields: [userId], references: [id])
+  exercises   TemplateExercise[]
+  sessions    WorkoutSession[]
+
+  @@index([userId], map: "idx_templates_user_id")
+  @@map("workout_templates")
+}
+
+model TemplateExercise {
+  id             String          @id @default(uuid()) @db.Uuid
+  templateId     String          @map("template_id") @db.Uuid
+  exerciseId     String          @map("exercise_id") @db.Uuid
+  orderIndex     Int             @map("order_index")
+  targetSets     Int             @map("target_sets")
+  targetReps     Int             @map("target_reps")
+  targetRpe      Float?          @map("target_rpe")
+  restSeconds    Int?            @map("rest_seconds")
+  createdAt      DateTime        @default(now()) @map("created_at")
+
+  template       WorkoutTemplate @relation(fields: [templateId], references: [id], onDelete: Cascade)
+  exercise       Exercise        @relation(fields: [exerciseId], references: [id])
+
+  @@index([templateId], map: "idx_template_exercises_template_id")
+  @@index([exerciseId], map: "idx_template_exercises_exercise_id")
+  @@unique([templateId, exerciseId], map: "uq_template_exercise")
+  @@map("template_exercises")
+}
+
+model WorkoutSession {
+  id            String         @id @default(uuid()) @db.Uuid
+  userId        String         @map("user_id") @db.Uuid
+  templateId    String?        @map("template_id") @db.Uuid
+  startedAt     DateTime       @map("started_at")
+  endedAt       DateTime?      @map("ended_at")
+  notes         String?
+  totalVolumeKg Float          @default(0) @map("total_volume_kg")
+  createdAt     DateTime       @default(now()) @map("created_at")
+  updatedAt     DateTime       @updatedAt @map("updated_at")
+  deletedAt     DateTime?      @map("deleted_at")
+
+  user          User           @relation(fields: [userId], references: [id])
+  template      WorkoutTemplate? @relation(fields: [templateId], references: [id])
+  sets          WorkoutSet[]
+
+  @@index([userId, startedAt], map: "idx_sessions_user_started_at")
+  @@map("workout_sessions")
+}
+
+model WorkoutSet {
+  id             String         @id @default(uuid()) @db.Uuid
+  sessionId      String         @map("session_id") @db.Uuid
+  exerciseId     String         @map("exercise_id") @db.Uuid
+  setNumber      Int            @map("set_number")
+  weightKg       Float          @map("weight_kg")
+  reps           Int
+  rpe            Float?
+  restSeconds    Int?           @map("rest_seconds")
+  volumeKg       Float          @default(0) @map("volume_kg")
+  completedAt    DateTime       @default(now()) @map("completed_at")
+  createdAt      DateTime       @default(now()) @map("created_at")
+
+  session        WorkoutSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  exercise       Exercise       @relation(fields: [exerciseId], references: [id])
+
+  @@index([sessionId], map: "idx_sets_session_id")
+  @@index([exerciseId], map: "idx_sets_exercise_id")
+  @@index([exerciseId, completedAt], map: "idx_sets_exercise_completed")
+  @@map("workout_sets")
+}
+
+model PersonalRecord {
+  id            String   @id @default(uuid()) @db.Uuid
+  userId        String   @map("user_id") @db.Uuid
+  exerciseId    String   @map("exercise_id") @db.Uuid
+  weightKg      Float    @map("weight_kg")
+  reps          Int
+  achievedAt    DateTime @map("achieved_at")
+  sessionId     String?  @map("session_id") @db.Uuid
+  createdAt     DateTime @default(now()) @map("created_at")
+  updatedAt     DateTime @updatedAt @map("updated_at")
+
+  user          User     @relation(fields: [userId], references: [id])
+  exercise      Exercise @relation(fields: [exerciseId], references: [id])
+  session       WorkoutSession? @relation(fields: [sessionId], references: [id])
+
+  @@index([userId, exerciseId], map: "idx_pr_user_exercise")
+  @@unique([userId, exerciseId], map: "uq_pr_user_exercise")
+  @@map("personal_records")
+}

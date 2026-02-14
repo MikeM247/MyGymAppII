@@ -1,0 +1,12 @@
+﻿node_modules
+.env
+.env.*
+!.env.example
+npm-debug.log*
+apps/mobile/.expo
+apps/mobile/dist
+apps/mobile/node_modules
+apps/api/.vercel
+apps/api/node_modules
+apps/api/generated
+packages/shared/node_modules

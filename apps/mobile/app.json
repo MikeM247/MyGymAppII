@@ -1,0 +1,15 @@
+﻿{
+  "expo": {
+    "name": "My Gym App II",
+    "slug": "my-gym-app-ii",
+    "scheme": "mygymappii",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "dark",
+    "platforms": ["ios", "android"],
+    "assetBundlePatterns": ["**/*"],
+    "experiments": {
+      "typedRoutes": true
+    }
+  }
+}
