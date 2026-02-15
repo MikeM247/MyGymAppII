@@ -11,7 +11,7 @@
     "prisma:seed": "tsx prisma/seed.ts"
   },
   "dependencies": {
-    "@my-gym-app/shared": "0.1.0",
+    "@my-gym-app/shared": "file:../../packages/shared",
     "@prisma/client": "^6.4.1",
     "@vercel/node": "^5.3.6",
     "bcryptjs": "^2.4.3",

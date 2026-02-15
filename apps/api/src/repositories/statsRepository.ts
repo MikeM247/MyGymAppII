@@ -1,14 +1,23 @@
-﻿import { prisma } from "../lib/prisma.js";
+import { prisma } from "../lib/prisma.js";
+
+type VolumeRow = {
+  completedAt: Date;
+  exerciseId: string;
+  exercise: {
+    name: string;
+  };
+  volumeKg: number;
+};
 
 export const statsRepository = {
   async volumeByExercise(userId: string) {
-    const rows = await prisma.workoutSet.findMany({
+    const rows = (await prisma.workoutSet.findMany({
       where: { session: { userId, deletedAt: null } },
       include: { exercise: true, session: true },
       orderBy: { completedAt: "asc" }
-    });
+    })) as VolumeRow[];
 
-    return rows.map((row) => ({
+    return rows.map((row: VolumeRow) => ({
       date: row.completedAt.toISOString(),
       exerciseId: row.exerciseId,
       exerciseName: row.exercise.name,

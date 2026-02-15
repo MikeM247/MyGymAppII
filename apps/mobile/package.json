@@ -15,7 +15,6 @@
     "@my-gym-app/shared": "0.1.0",
     "@react-native-async-storage/async-storage": "^2.1.2",
     "expo": "~53.0.0",
-    "expo-network": "~7.0.6",
     "expo-router": "~5.0.2",
     "expo-secure-store": "~14.0.1",
     "react": "19.0.0",

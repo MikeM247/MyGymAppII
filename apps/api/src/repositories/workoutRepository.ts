@@ -1,9 +1,9 @@
-﻿import { prisma } from "../lib/prisma.js";
+import { prisma } from "../lib/prisma.js";
 import type { LogWorkoutInput } from "@my-gym-app/shared";
 
 export const workoutRepository = {
   async createSessionWithSets(userId: string, input: LogWorkoutInput) {
-    return prisma.$transaction(async (tx) => {
+    return prisma.$transaction(async (tx: typeof prisma) => {
       const session = await tx.workoutSession.create({
         data: {
           userId,
@@ -56,4 +56,3 @@ export const workoutRepository = {
     });
   }
 };
-
