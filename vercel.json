@@ -1,5 +1,6 @@
 {
   "version": 2,
+  "installCommand": "npm install --workspace apps/api --workspace packages/shared",
   "functions": {
     "apps/api/api/**/*.ts": {
       "memory": 512,
