@@ -1,5 +1,5 @@
 {
-  "installCommand": "cd ../.. && npm install --workspace apps/api --workspace packages/shared",
+  "installCommand": "npm install",
   "functions": {
     "api/**/*.ts": {
       "memory": 512,
