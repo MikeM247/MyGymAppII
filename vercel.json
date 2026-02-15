@@ -1,0 +1,23 @@
+{
+  "version": 2,
+  "functions": {
+    "apps/api/api/**/*.ts": {
+      "memory": 512,
+      "maxDuration": 10
+    }
+  },
+  "rewrites": [
+    {
+      "source": "/api/(.*)",
+      "destination": "/apps/api/api/$1"
+    },
+    {
+      "source": "/",
+      "destination": "/apps/api/index.html"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/apps/api/index.html"
+    }
+  ]
+}
